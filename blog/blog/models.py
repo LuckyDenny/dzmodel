@@ -62,6 +62,7 @@ class Comment(models.Model):
     comment = models.TextField(verbose_name="Коментар")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True, related_name='comments')
+    published_date = models.DateTimeField(auto_created=True, verbose_name="Дата публікаціїї",null=True, blank=True)
 
     def __str__(self):
         return self.comment

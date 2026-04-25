@@ -11,7 +11,7 @@
 </h2>
 <p>
         {% for tag in post.tags.all %}
-            <span>#{{ tag.name }}</span>
+            <span><a href="{% url 'tag' slug=tag.slug %}"> #{{ tag.name }}</a></span>
         {% empty %}
         <span>No tags yet</span>
         {% endfor %}

@@ -23,6 +23,22 @@
                     <li>
                         <a href="#">Contact</a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                    <a href="{% url 'create_post' %}">Create post</a>
+                    </li>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                     <li>
+                    <a href="{% url 'register' %}">Register</a>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <span>Hello, {{ user }}</span>
+                    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                    {% endif %}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

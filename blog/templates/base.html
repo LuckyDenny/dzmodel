@@ -26,6 +26,21 @@
 </head>
 <body>
 {% include 'componenets/navbar.html' %}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
 {% block main %} {% endblock %}
         <footer>
             <div class="row">
@@ -36,5 +51,7 @@
         </footer>
     <script src="{% static 'blog/js/jquery.js' %}"></script>
     <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+
+
 </body>
 </html>
