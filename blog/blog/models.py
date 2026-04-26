@@ -71,3 +71,11 @@ class Comment(models.Model):
         verbose_name = 'Коментарій'
         verbose_name_plural = 'Коментарії'
 
+class Subscribe(models.Model):
+    email = models.EmailField(verbose_name="E-mail")
+    def __str__(self):
+        return self.email
+    class Meta:
+        verbose_name = 'E-mail'
+        verbose_name_plural = 'E-mails'
+

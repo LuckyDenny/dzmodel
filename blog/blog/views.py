@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.defaultfilters import title
 from django.db.models import Q
 from .models import Post, Category, Tag, Comment
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, SubscribeForm
 from django.contrib import messages
 
 
@@ -92,3 +92,36 @@ def create_post(request):
     context = {'form': form}
     context.update(get_category())
     return render(request, 'blog/create_post.html', context)
+
+
+def create_comment(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post = post
+            new_comment.published_date = now()
+            new_comment.save()
+            messages.success(request, 'Коментар успішно додано!')
+            return redirect('post', slug=post.slug)
+    else:
+        form = CommentForm()
+    context = {'form': form, 'post': post}
+    context.update(get_category())
+    return render(request, 'blog/post.html', context)
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Ви успішно підписалися!')
+            return redirect('index')
+    else:
+        form = SubscribeForm()
+    context = {'subscribe_form': form}
+    context.update(get_category())
+    return render(request, 'blog/contact.html', context)

@@ -36,14 +36,19 @@
                 <!-- Blog Comments -->
 
                 <!-- Comments Form -->
-                <div class="well">
+<div class="well">
     <h4>Leave a Comment:</h4>
-    <form method="post">
-        {% csrf_token %} <div class="form-group">
-            {{ form.comment }}
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'create_comment' slug=post.slug %}">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.comment }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    {% else %}
+        <p>Потрібно <a href="{% url 'login' %}">увійти</a>, щоб залишити коментар.</p>
+    {% endif %}
 </div>
 
 <hr>

@@ -1,0 +1,16 @@
+{% extends "layout/main_layout.html" %}
+{% block content %}
+<h1>Contact</h1>
+<div class="well">
+    <h4>Подписка на новости</h4>
+    <form action="{% url 'contact' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            {{ subscribe_form.email }}
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">OK</button>
+            </span>
+        </div>
+    </form>
+</div>
+{% endblock %}
