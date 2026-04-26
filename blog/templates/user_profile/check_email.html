@@ -1,0 +1,16 @@
+{% extends "layout/main_layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="panel panel-default" style="margin-top: 50px;">
+            <div class="panel-body">
+                <h2 style="color: #c66377;">Лист відправлено!</h2>
+                <p>Ми надіслали посилання для підтвердження на вашу пошту.</p>
+                <p>Перевірте папку <strong>Спам</strong>, якщо лист не прийшов.</p>
+                <hr>
+                <a href="{% url 'login' %}" class="btn btn-primary">Повернутися до входу</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% autoescape off %}
+Привіт, {{ user.username }}!
+
+Для активації акаунта перейдіть за посиланням:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Якщо ви не реєструвалися, просто ігноруйте цей лист.
+{% endautoescape %}
