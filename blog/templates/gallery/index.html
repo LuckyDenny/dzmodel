@@ -1,0 +1,22 @@
+{% extends "layout/main_layout.html" %}
+{% load thumbnail %}
+{% block content %}
+
+<div class="container">
+
+    <h1 class="mb-4">Gallery</h1>
+    {% for image in images %}
+    <h3>{{ image.title }}</h3>
+    {% thumbnail image.image "200x200" crop="center" as im %}
+            <a href="{{ image.image.url }}" target="_blank"><img src="{{ im.url }}" alt="{{ im.title }}"></a>
+    {% endthumbnail %}
+
+{% endfor %}
+
+    <a href="{% url 'uploads' %}">Load Photo</a>
+
+</div>
+
+
+
+{% endblock %}

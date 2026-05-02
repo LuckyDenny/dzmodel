@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import CASCADE
 from django.utils.text import slugify
 
 
@@ -57,6 +58,27 @@ class Post(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+class Photo(models.Model):
+    image = models.ImageField(upload_to='post/')
+    thumbnail = models.ImageField(upload_to='post/thumbnails/', blank=True)
+    post = models.ForeignKey(Post, on_delete=CASCADE, related_name='photos', verbose_name="Пост")
+
+    def create_thumbnail(self):
+        img_path = self.image.path
+        thumb_path = os.path.join(os.path.dirname(img_path), 'thumbnails', os.path.basename(img_path))
+        os.path.basename(img_path)
+        img = Image.open(img_path)
+        img.thumbnail((200, 200))
+        os.makedirs(os.path.dirname(thumb_path), exist_ok=True)
+        img.save(thumb_path)
+        self.thumbnail = f"gallery/thumbnails/{os.path.basename(img_path)}"
+        super().save(update_fields=['thumbnail'])
+
+    def __str__(self):
+        return self.title
+
+
+
 
 class Comment(models.Model):
     comment = models.TextField(verbose_name="Коментар")
@@ -78,4 +100,13 @@ class Subscribe(models.Model):
     class Meta:
         verbose_name = 'E-mail'
         verbose_name_plural = 'E-mails'
+
+
+class PostImage(models.Model):
+    image = models.ImageField(upload_to='gallery/')
+    thumbnail = models.ImageField(upload_to='gallery/thumbnails/', blank=True)
+    post = models.ForeignKey(Post, on_delete=CASCADE, related_name='images')
+
+    def __str__(self):
+        return f"Image for {self.post.title}"
 

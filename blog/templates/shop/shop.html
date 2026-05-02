@@ -1,0 +1,159 @@
+{% extends "layout/shop_layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+    {% if category %}
+        <h1 class="text-center mb-5" style="font-weight: 700; color: #333;">Колекція: {{ category.title }}</h1>
+
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="category-card">
+                    <a href="{% url 'product' product.slug %}">
+                        <div class="category-image-wrapper">
+                            <img src="{{ product.images.url }}" class="img-responsive" alt="{{ product.title }}">
+                            <div class="category-overlay">
+                                <span class="view-details">Дивитись виріб</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="category-info">
+                        <h3>{{ product.title }}</h3>
+                        <p class="text-primary" style="font-weight: 600; font-size: 1.1rem;">{{ product.price }} грн</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>У цій колекції поки що немає товарів.</p>
+                <a href="{% url 'shop' %}" class="btn btn-outline-dark mt-3">Назад до категорій</a>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <h1 class="text-center mb-5" style="font-weight: 700; color: #333;">Колекції DeJu</h1>
+
+        <div class="row">
+            {% for cat in categories %}
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="category-card">
+                    <a href="{% url 'category' cat.slug %}">
+                        <div class="category-image-wrapper">
+                            {% if cat.thumbnail %}
+                                <img src="{{ cat.thumbnail.url }}" class="img-responsive" alt="{{ cat.title }}">
+                            {% else %}
+                                <img src="{{ cat.image.url }}" class="img-responsive" alt="{{ cat.title }}">
+                            {% endif %}
+                            <div class="category-overlay">
+                                <span class="view-details">Відкрити каталог</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="category-info">
+                        <h3>{{ cat.title }}</h3>
+                        <p class="text-muted small">Переглянути товари</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Наразі немає активних категорій.</p>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Базова картка */
+    .category-card {
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Контейнер зображення */
+    .category-image-wrapper {
+        position: relative;
+        height: 320px; /* Трохи збільшили для ювелірних виробів */
+        overflow: hidden;
+        background-color: #f8f9fa;
+    }
+
+    .category-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .category-card:hover .category-image-wrapper img {
+        transform: scale(1.08);
+    }
+
+    /* Ефект при наведенні */
+    .category-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .category-card:hover .category-overlay {
+        opacity: 1;
+    }
+
+    .view-details {
+        background: #fff;
+        color: #333;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Інфо-блок */
+    .category-info {
+        padding: 20px;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .category-info h3 {
+        margin: 0 0 8px 0;
+        font-size: 1.2rem;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    /* Прибираємо стандартне підкреслення посилань */
+    a {
+        text-decoration: none !important;
+    }
+</style>
+{% endblock %}

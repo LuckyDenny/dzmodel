@@ -1,0 +1,80 @@
+{% extends "layout/shop_layout.html" %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="main-image-container mb-3">
+                <img src="{{ product.images.url }}" id="mainProductImage" class="img-fluid rounded shadow-sm" alt="{{ product.title }}">
+            </div>
+            
+            <div class="row g-2">
+                {% for extra in imeges %}
+                <div class="col-3">
+                    <img src="{{ extra.image.url }}" class="img-thumbnail thumbnail-clickable" 
+                         onclick="changeImage(this.src)" style="cursor: pointer; height: 80px; width: 100%; object-fit: cover;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'shop' %}">Магазин</a></li>
+                    <li class="breadcrumb-item active">{{ product.category.title }}</li>
+                </ol>
+            </nav>
+
+            <h1 class="display-5 fw-bold mb-3">{{ product.title }}</h1>
+            
+            <div class="price-tag mb-4">
+                <span class="h2 text-primary">{{ product.price }} грн</span>
+            </div>
+
+            <div class="product-description mb-5">
+                <h4 class="fw-bold">Опис виробу:</h4>
+                <p class="text-muted" style="white-space: pre-line;">{{ product.about }}</p>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-dark btn-lg px-5 py-3 shadow-sm">Замовити в Telegram</button>
+                <p class="text-center small text-muted mt-2">Артикул: #{{ product.id }} | Додано: {{ product.uploaded_at|date:"d.m.Y" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function changeImage(src) {
+    document.getElementById('mainProductImage').src = src;
+}
+</script>
+
+<style>
+    .main-image-container {
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        overflow: hidden;
+    }
+    .main-image-container img {
+        max-height: 100%;
+        width: auto;
+        transition: transform 0.3s ease;
+    }
+    .main-image-container img:hover {
+        transform: scale(1.05);
+    }
+    .thumbnail-clickable:hover {
+        border-color: #333;
+        opacity: 0.8;
+    }
+    .price-tag {
+        border-bottom: 2px solid #eee;
+        padding-bottom: 20px;
+    }
+</style>
+{% endblock %}
