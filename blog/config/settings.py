@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'gallery',
     'sorl.thumbnail',
-    'shop'
+    'shop',
+    'cart'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -138,3 +139,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/media/'
+
+CART_SESSION_ID = 'cart'

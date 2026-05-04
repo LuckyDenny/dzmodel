@@ -18,7 +18,7 @@
                         <a href="{% url 'index' %}">Home</a>
                     </li>
                     <li>
-                        <a href="{% url 'shop' %}">Shop</a>
+                        <a href="{% url 'shop:shop' %}">Shop</a>
                     </li>
                     <li>
                         <a href="{% url 'gallery' %}">Gallery</a>
@@ -42,6 +42,23 @@
                     {% else %}
                     <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
                     {% endif %}
+
+
+
+                    <li class="nav-item">
+    <a class="nav-link px-3 position-relative" href="{% url 'cart:cart_detail' %}">Cart
+
+        {% if cart_count > 0 %}
+        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ cart_count }}
+        </span>
+        {% endif %}
+
+
+    </a>
+</li>
+
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

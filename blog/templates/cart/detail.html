@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">🛒 Your Cart</h2>
+
+    {% if cart %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Total</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in cart %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.product.title }}</strong>
+                        </td>
+
+                        <td class="text-center">
+                                <span class="badge bg-primary">
+                                    {{ item.quantity }}
+                                </span>
+                        </td>
+
+                        <td class="text-end">
+                            ${{ item.price }}
+                        </td>
+
+                        <td class="text-end fw-bold">
+                            ${{ item.total_price }}
+                        </td>
+
+                        <td class="text-end">
+                            <a href="{% url 'cart:cart_remove' item.product.id %}"
+                               class="btn btn-sm btn-outline-danger">
+                                Remove
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <h4>Total:</h4>
+                <h4 class="text-success fw-bold">
+                    ${{ cart.get_total_price }}
+                </h4>
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{% url 'shop:shop' %}"
+                   class="btn btn-outline-secondary me-2">
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+    <div class="alert alert-info">
+        Your cart is empty.
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

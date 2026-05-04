@@ -3,43 +3,81 @@
 {% block content %}
 <div class="container mt-5 mb-5">
     <div class="row">
+        <!-- Секція зображень -->
         <div class="col-md-6">
-            <div class="main-image-container mb-3">
-                <img src="{{ product.images.url }}" id="mainProductImage" class="img-fluid rounded shadow-sm" alt="{{ product.title }}">
+            <div class="main-image-container mb-3 shadow-sm rounded border bg-white">
+                {% if product.images %}
+                    <img src="{{ product.images.url }}" id="mainProductImage" class="img-fluid" alt="{{ product.title }}">
+                {% else %}
+                    <div class="text-muted d-flex flex-column align-items-center justify-content-center h-100">
+                        <i class="bi bi-image" style="font-size: 4rem;"></i>
+                        <span>Фото відсутнє</span>
+                    </div>
+                {% endif %}
             </div>
-            
+
+            <!-- Мініатюри додаткових фото -->
             <div class="row g-2">
-                {% for extra in imeges %}
-                <div class="col-3">
-                    <img src="{{ extra.image.url }}" class="img-thumbnail thumbnail-clickable" 
-                         onclick="changeImage(this.src)" style="cursor: pointer; height: 80px; width: 100%; object-fit: cover;">
-                </div>
-                {% endfor %}
+                {% if images %}
+                    {% for extra in images %}
+                    <div class="col-3">
+                        <img src="{{ extra.image.url }}"
+                             class="img-thumbnail thumbnail-clickable"
+                             onclick="changeImage(this.src)"
+                             alt="Додаткове фото {{ forloop.counter }}">
+                    </div>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
 
+        <!-- Секція інформації -->
         <div class="col-md-6">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'shop' %}">Магазин</a></li>
-                    <li class="breadcrumb-item active">{{ product.category.title }}</li>
+                    <!-- ВИПРАВЛЕНО: shop:shop згідно з вашим urls.py -->
+                    <li class="breadcrumb-item"><a href="{% url 'shop:shop' %}">Магазин</a></li>
+                    {% if product.category %}
+                        <li class="breadcrumb-item active">{{ product.category.title }}</li>
+                    {% endif %}
                 </ol>
             </nav>
 
             <h1 class="display-5 fw-bold mb-3">{{ product.title }}</h1>
-            
+
             <div class="price-tag mb-4">
-                <span class="h2 text-primary">{{ product.price }} грн</span>
+                <span class="h2 text-primary fw-bold">{{ product.price }} грн</span>
             </div>
 
             <div class="product-description mb-5">
-                <h4 class="fw-bold">Опис виробу:</h4>
-                <p class="text-muted" style="white-space: pre-line;">{{ product.about }}</p>
+                <h4 class="fw-bold text-dark">Опис виробу:</h4>
+                <p class="text-muted fs-5" style="white-space: pre-line;">{{ product.about }}</p>
             </div>
 
-            <div class="d-grid gap-2">
-                <button class="btn btn-dark btn-lg px-5 py-3 shadow-sm">Замовити в Telegram</button>
-                <p class="text-center small text-muted mt-2">Артикул: #{{ product.id }} | Додано: {{ product.uploaded_at|date:"d.m.Y" }}</p>
+            <!-- Блок дій -->
+            <div class="d-grid gap-3">
+                <!-- Форма додавання в кошик -->
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group input-group-lg shadow-sm">
+                        <span class="input-group-text bg-light fs-6">Кількість</span>
+                        <input type="number" name="quantity" value="1" min="1" class="form-control text-center fw-bold">
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">
+                            <i class="bi bi-cart-plus me-2"></i>Додати в кошик
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Замовлення в Telegram -->
+                <a href="https://t.me/your_bot_username?start=prod_{{ product.id }}"
+                   class="btn btn-outline-dark btn-lg py-3 shadow-sm fw-bold">
+                    <i class="bi bi-telegram me-2 text-info"></i>Замовити в Telegram
+                </a>
+
+                <div class="mt-3 p-3 bg-light rounded border border-dashed">
+                    <p class="mb-1 small text-secondary"><strong>Артикул:</strong> #{{ product.id }}</p>
+                    <p class="mb-0 small text-secondary"><strong>Оновлено:</strong> {{ product.uploaded_at|date:"d.m.Y" }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -47,7 +85,12 @@
 
 <script>
 function changeImage(src) {
-    document.getElementById('mainProductImage').src = src;
+    const mainImg = document.getElementById('mainProductImage');
+    if (mainImg) {
+        mainImg.style.opacity = '0.5';
+        mainImg.src = src;
+        setTimeout(() => { mainImg.style.opacity = '1'; }, 100);
+    }
 }
 </script>
 
@@ -57,24 +100,29 @@ function changeImage(src) {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f8f9fa;
         overflow: hidden;
     }
     .main-image-container img {
         max-height: 100%;
-        width: auto;
-        transition: transform 0.3s ease;
+        max-width: 100%;
+        object-fit: contain;
+        transition: all 0.3s ease;
     }
-    .main-image-container img:hover {
-        transform: scale(1.05);
+    .thumbnail-clickable {
+        cursor: pointer;
+        height: 80px;
+        width: 100%;
+        object-fit: cover;
+        transition: all 0.2s ease;
     }
     .thumbnail-clickable:hover {
-        border-color: #333;
-        opacity: 0.8;
+        border-color: #0d6efd;
+        transform: translateY(-2px);
     }
     .price-tag {
-        border-bottom: 2px solid #eee;
-        padding-bottom: 20px;
+        border-bottom: 1px dashed #dee2e6;
+        padding-bottom: 1.5rem;
     }
+    .border-dashed { border-style: dashed !important; }
 </style>
 {% endblock %}
