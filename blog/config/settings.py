@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-*fmm^!(oyo($=896=6c7b5uv5@byh-sbtv)qoah09s%d^+jecn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'gallery',
     'sorl.thumbnail',
     'shop',
-    'cart'
+    'cart',
+    'order'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

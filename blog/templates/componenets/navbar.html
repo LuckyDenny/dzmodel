@@ -21,6 +21,9 @@
                         <a href="{% url 'shop:shop' %}">Shop</a>
                     </li>
                     <li>
+                        <a href="{% url 'order:create_order' %}">Checkout</a>
+                    </li>
+                    <li>
                         <a href="{% url 'gallery' %}">Gallery</a>
                     </li>
                     <li>
@@ -35,6 +38,7 @@
                      <li>
                     <a href="{% url 'register' %}">Register</a>
                     </li>
+
                     {% endif %}
                     {% if user.is_authenticated %}
                     <span style="color: #c66377;">Hello, <a href="{% url 'profile' %}">{{ user }}</a></span>

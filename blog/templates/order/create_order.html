@@ -1,0 +1,76 @@
+{% extends "layout/main_layout.html" %}
+{% load static %}
+
+{% block main %}
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Кошик (права частина) -->
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Ваше замовлення</span>
+                <span class="badge bg-primary rounded-pill">{{ cart|length }}</span>
+            </h4>
+            <ul class="list-group mb-3 shadow-sm">
+                {% for item in cart %}
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">{{ item.product.title }}</h6>
+                        <small class="text-muted">Кількість: {{ item.quantity }}</small>
+                    </div>
+                    <span class="text-muted">{{ item.total_price }} грн</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <span class="text-success font-weight-bold">Разом</span>
+                    <strong class="text-success">{{ cart.get_total_price }} грн</strong>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Форма (ліва частина) -->
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">Оформлення доставки</h4>
+            <div class="card shadow-sm border-0 p-4">
+                <form method="post" action="." class="needs-validation">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label for="id_first_name" class="form-label">Ім'я</label>
+                            <input type="text" name="first_name" class="form-control" id="id_first_name" placeholder="Денис" required>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="id_last_name" class="form-label">Прізвище</label>
+                            <input type="text" name="last_name" class="form-control" id="id_last_name" placeholder="Герасимов" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" id="id_email" placeholder="example@mail.com" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_phone" class="form-label">Номер телефону</label>
+                            <input type="text" name="phone" class="form-control" id="id_phone" placeholder="+380..." required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_address" class="form-label">Адреса (вулиця, будинок, кв.)</label>
+                            <textarea name="address" class="form-control" id="id_address" rows="3" placeholder="пр. Хмельницького, 114..." required></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="id_city" class="form-label">Місто</label>
+                            <input type="text" name="city" class="form-control" id="id_city" placeholder="Дніпро" required>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary btn-lg shadow-sm" type="submit">Оформити замовлення</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

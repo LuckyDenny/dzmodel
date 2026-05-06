@@ -1,0 +1,25 @@
+{% extends "layout/main_layout.html" %}
+
+{% block main %}
+<div class="container py-5 text-center">
+    <div class="card shadow-sm p-5 border-0 rounded-4 bg-light">
+        <div class="mb-4">
+            <!-- Іконка успіху -->
+            <i class="bi bi-bag-check-fill text-success" style="font-size: 5rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold text-dark">Замовлення прийнято!</h1>
+        <p class="lead text-muted mb-4">
+            Дякуємо, <strong>{{ order.first_name }}</strong>! <br>
+            Ваше замовлення <strong>#{{ order.id }}</strong> успішно зареєстровано.
+        </p>
+        <div class="p-3 bg-white rounded-3 shadow-sm mb-4 mx-auto" style="max-width: 400px;">
+            <p class="mb-1 text-muted">Ми зв'яжемося з вами за номером:</p>
+            <h5 class="fw-bold">{{ order.phone }}</h5>
+        </div>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'shop:shop' %}" class="btn btn-primary btn-lg px-5 shadow-sm">До каталогу</a>
+            <button onclick="window.print()" class="btn btn-outline-secondary btn-lg px-4">Друкувати чек</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
