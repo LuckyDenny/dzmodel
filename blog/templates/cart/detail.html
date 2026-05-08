@@ -29,11 +29,23 @@
                             <strong>{{ item.product.title }}</strong>
                         </td>
 
-                        <td class="text-center">
-                                <span class="badge bg-primary">
-                                    {{ item.quantity }}
-                                </span>
+                        <td>
+                            <img src="{{ item.product.images.url }}" alt="{{ item.product.title }}" style="width: 100px; height: auto;">
                         </td>
+
+                        <td class="text-center">
+    <div class="d-flex align-items-center justify-content-center">
+        <a href="{% url 'cart:cart_add' item.product.id %}?action=minus"
+           class="btn btn-sm btn-outline-secondary px-2 py-0">-</a>
+
+        <span class="badge bg-primary mx-2" style="font-size: 1rem;">
+            {{ item.quantity }}
+        </span>
+
+        <a href="{% url 'cart:cart_add' item.product.id %}?action=plus"
+           class="btn btn-sm btn-outline-secondary px-2 py-0">+</a>
+    </div>
+</td>
 
                         <td class="text-end">
                             ${{ item.price }}

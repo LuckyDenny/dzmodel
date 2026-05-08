@@ -20,6 +20,8 @@ class Cart:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
+        if self.cart[product_id]['quantity'] <= 0:
+            self.remove(product)
 
         self.save()
 

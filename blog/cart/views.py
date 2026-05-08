@@ -7,7 +7,11 @@ from django.views.decorators.http import require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    cart.add(product=product, quantity=1)
+    action = request.GET.get('action')
+    if action == 'minus':
+        cart.add(product=product, quantity=-1, override_quantity=False)
+    else:
+        cart.add(product=product, quantity=1, override_quantity=False)
     return redirect('cart:cart_detail')
 
 
